@@ -7,17 +7,38 @@ function processData(input) {
 
     testCases.forEach(test => {
         // first pass to eliminate obvious lies
-        // console.log(test);
-        // if (test.question.type == 'count') {
-        //     if (test.question.red + test.question.blue + test.question.green > 10 && test.answer ==) {
-        //         test.numLies--;
-        //     }
-        // } else if (test.question.type == color) {
-        //
-        // }
-    });
+        test.questions.forEach(question => {
+            if (question.type == 'count') {
+                if ((question.red || 0) + (question.blue || 0) + (question.green || 0) > 10 && test.answer == true && test.type == 'join') {
+                    test.numLies--;
+                    question.lie = true;
+                }
+            } else if (question.type == 'color') {
+                let lie = false;
+                question.red.forEach(index => {
+                    if (index < 0 || index > 10) {
+                        lie = true;
+                    }
+                });
+                question.red.forEach(index => {
+                    if (index < 0 || index > 10) {
+                        lie = true;
+                    }
+                });
+                question.red.forEach(index => {
+                    if (index < 0 || index > 10) {
+                        lie = true;
+                    }
+                });
+                if (lie) {
+                    test.numLies--;
+                    question.lie = true;
+                }
+            }
+        });
 
-    // console.log(testCases.length);
+
+    });
 }
 
 function parse(lines) {
@@ -37,6 +58,7 @@ function parse(lines) {
         } else if (line.substr(0, 5) == "color") {
             current.questions.push({
                 type: 'color',
+                lie: false,
                 join: line.indexOf(" or ") > 0 ? 'or' : (line.indexOf(" and ") > 0 ? 'and' : null),
                 red: countColors(" r", line),
                 green: countColors(" g", line, -1),
@@ -45,6 +67,7 @@ function parse(lines) {
         } else if (line.substr(0, 5) == 'count') {
             current.questions.push({
                 type: 'count',
+                lie: false,
                 join: line.indexOf(" or ") > 0 ? 'or' : (line.indexOf(" and ") > 0 ? 'and' : null),
                 red: parseInt(line.charAt(line.indexOf(" r ") + 3)) || null,
                 green: parseInt(line.charAt(line.indexOf(" g ") + 3)) || null,
