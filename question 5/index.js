@@ -19,21 +19,29 @@ function processData(input) {
     lines.shift();
     lines.shift();
     lines.forEach(line => {
+        try {
         let details = line.split(',');
         let client = clients[details[columns.phone]];
+        let datecol = details[columns.dt];
+        let parts = datecol.split(" ");
+        let left = parts[0].split("/");
+        let right = parts[1].split(":");
+        let date = new Date(left[2], left[0], left[1], right[0], right[1]);
         if (client) {
-            let ndate = new Date(details[columns.dt]);
-            if (client.time < ndate) {
-                client.time = ndate;
+            if (client.time < date) {
+                client.time = date;
                 client.lat = parseFloat(details[columns.lat]);
                 client.lon = parseFloat(details[columns.lon]);
             }
         } else {
             clients[details[columns.phone]] = {
-                time: new Date(details[columns.dt]),
+                time: date,
                 lat: parseFloat(details[columns.lat]),
                 lon: parseFloat(details[columns.lon])
             }
+        }
+        } catch(e) {
+
         }
     });
 

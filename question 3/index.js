@@ -4,50 +4,41 @@ function processData(input) {
 
         let nums = set.split(" ");
 
-        let a = parseInt(nums[0]);
-        let b = parseInt(nums[1]);
-        let c = parseInt(nums[2]);
+        let N = parseInt(nums[0]);
+        let A = parseInt(nums[1]);
+        let B = parseInt(nums[2]);
 
-        let ans = 0;
-        for(let i = b; i <= c; i++){
-            if (isPrime(i)) {
-                ans += i;
-            } else if (coPrime(a, i)) {
-                ans += i;
-            }
-        }
-        console.log(ans % 1000000007)
+        let sieve = derp(12);
+        console.log(sieve);
+
+        for (o = [], a = 1;prompt(b = 1); b++ < 99; --c || o.push(b))for (c = a, d = b; d;)d = c % (c = d);
+        o.join(', ')
+        // let suma = derp(A);
+        // let sumb = derp(B);
+        // let total = sumb - suma;
+        // console.log(phi(12));
+        // console.log(total % 1000000007)
     })
 }
 
-function isPrime(number) {
-    var start = 2;
-    while (start <= Math.sqrt(number)) {
-        if (number % start++ < 1) return false;
-    }
-    return number > 1;
-}
+function derp(n) {
+    var i, j;
+    var prime = new Array(n);
+    for (i = 2; i < n; i++) prime[i] = true;
 
-function coPrime(u, v) {
-    {
-        if (((u | v) & 1) == 0) return false;
-
-        while ((u & 1) == 0) u >>= 1;
-        if (u == 1) return true;
-
-        do {
-            while ((v & 1) == 0) v >>= 1;
-            if (v == 1) return true;
-
-            if (u > v) {
-                let t = v;
-                v = u;
-                u = t;
+    for (i = 2; i * i < n; i++) {
+        if (prime[i]) {
+            for (j = 0; i * i + i * j < n; j++) {
+                prime[i * i + i * j] = false;
             }
-            v -= u;
-        } while (v != 0);
+        }
+    }
 
-        return false;
+    var cnt = 0;
+    for (i = 2; i < n; i++) {
+        if (prime[i]) {
+            console.log(i);
+        }
     }
 }
 
