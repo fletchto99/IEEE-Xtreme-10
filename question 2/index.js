@@ -6,38 +6,15 @@ function processData(input) {
     let testCases = parse(lines);
 
     testCases.forEach(test => {
-        // first pass to eliminate obvious lies
+        // first pass to find obvious lies
         test.questions.forEach(question => {
             if (question.type == 'count') {
                 if ((question.red || 0) + (question.blue || 0) + (question.green || 0) > 10 && test.answer == true && test.type == 'join') {
                     test.numLies--;
                     question.lie = true;
                 }
-            } else if (question.type == 'color') {
-                let lie = false;
-                question.red.forEach(index => {
-                    if (index < 0 || index > 10) {
-                        lie = true;
-                    }
-                });
-                question.red.forEach(index => {
-                    if (index < 0 || index > 10) {
-                        lie = true;
-                    }
-                });
-                question.red.forEach(index => {
-                    if (index < 0 || index > 10) {
-                        lie = true;
-                    }
-                });
-                if (lie) {
-                    test.numLies--;
-                    question.lie = true;
-                }
             }
         });
-
-
     });
 }
 
@@ -84,7 +61,7 @@ function countColors(searchStr, str) {
     str = str.toLowerCase();
     searchStr = searchStr.toLowerCase();
     while ((index = str.indexOf(searchStr, startIndex)) > -1) {
-        results.push(parseInt(str.charAt(index - 1)));
+        results.push(parseInt(str.substr(index - 2, 2).trim()));
         startIndex = index + searchlen;
     }
     return results;
