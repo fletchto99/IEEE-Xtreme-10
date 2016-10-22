@@ -9,6 +9,7 @@ function processData(input) {
     for(let i = 0; i < n; i++) {
         let coords = lines.shift().split(" ").map(item => parseFloat(item));
         soldiers.push({
+            id: i,
             x: coords[0],
             y: coords[1]
         })
@@ -17,6 +18,7 @@ function processData(input) {
     for (let i = 0; i < n; i++) {
         let coords = lines.shift().split(" ").map(item => parseFloat(item));
         camps.push({
+            id: i,
             x: coords[0],
             y: coords[1],
             soldier: null,
@@ -25,30 +27,57 @@ function processData(input) {
     }
 
     let totalDist = 0;
-    let shortestDist = 999999999;
+    let maximalDist = -999999999;
+
+    var distances = [];
 
     soldiers.forEach(soldier => {
-        let chosen = null;
-        let distance = 999999999999;
         camps.forEach(camp => {
-            if (camp.soldier) {
-                return;
-            }
-            let toCamp = Math.sqrt((soldier.x - camp.x) * (soldier.x - camp.x) + (soldier.y - camp.y) * (soldier.y - camp.y));
-            if (toCamp < distance) {
-                distance = toCamp;
-                chosen = camp;
+            distances.push({
+                soldier: soldier,
+                camp: camp,
+                distance: Math.sqrt((soldier.x - camp.x) * (soldier.x - camp.x) + (soldier.y - camp.y) * (soldier.y - camp.y))
+            })
+        })
+    });
+
+    distances.sort((a, b) => a.distance - b.distance);
+
+    let chosen = [];
+
+    distances.forEach(distance => {
+        let found = false;
+        chosen.forEach(chosen => {
+            if (chosen.soldier.id == distance.soldier.id || chosen.camp.id == distance.camp.id) {
+                found = true;
             }
         });
-        chosen.soldier = soldier;
-        chosen.distance = distance;
-        if (distance < shortestDist) {
-            shortestDist = distance;
+        if (!found) {
+            chosen.push(distance);
         }
-        totalDist += distance;
     });
-    console.log(shortestDist);
+
+    chosen.forEach(chosen => {
+        totalDist += chosen.distance;
+        if (chosen.distance > maximalDist) {
+            maximalDist = chosen.distance;
+        }
+    });
+
+    console.log(maximalDist);
     console.log(totalDist);
+}
+
+function checkNested(obj /*, level1, level2, ... levelN*/) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    for (var i = 0; i < args.length; i++) {
+        if (!obj || !obj.hasOwnProperty(args[i])) {
+            return false;
+        }
+        obj = obj[args[i]];
+    }
+    return true;
 }
 
 var fs = require('fs');
