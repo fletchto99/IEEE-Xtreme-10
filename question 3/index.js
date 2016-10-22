@@ -4,42 +4,38 @@ function processData(input) {
 
         let nums = set.split(" ");
 
-        let N = parseInt(nums[0]);
-        let A = parseInt(nums[1]);
-        let B = parseInt(nums[2]);
+        let n = parseInt(nums[0]);
+        let a = parseInt(nums[1]);
+        let b = parseInt(nums[2]);
+        let sum = 0;
 
-        let sieve = derp(12);
-        console.log(sieve);
-
-        for (o = [], a = 1;prompt(b = 1); b++ < 99; --c || o.push(b))for (c = a, d = b; d;)d = c % (c = d);
-        o.join(', ')
-        // let suma = derp(A);
-        // let sumb = derp(B);
-        // let total = sumb - suma;
-        // console.log(phi(12));
-        // console.log(total % 1000000007)
+        for(let i = a; a <= b; i++) {
+            if (isPrime(i)){
+                sum += i;
+            } else if (gcd(i, n) == 1) {
+                sum += i;
+            }
+        }
+        console.log(sum % 1000000007);
     })
 }
 
-function derp(n) {
-    var i, j;
-    var prime = new Array(n);
-    for (i = 2; i < n; i++) prime[i] = true;
-
-    for (i = 2; i * i < n; i++) {
-        if (prime[i]) {
-            for (j = 0; i * i + i * j < n; j++) {
-                prime[i * i + i * j] = false;
-            }
-        }
+function isPrime(number) {
+    var start = 2;
+    while (start <= Math.sqrt(number)) {
+        if (number % start++ < 1) return false;
     }
+    return number > 1;
+}
 
-    var cnt = 0;
-    for (i = 2; i < n; i++) {
-        if (prime[i]) {
-            console.log(i);
-        }
+function gcd(a, b){
+    let t;
+    while (b != 0) {
+        t = a;
+        a = b;
+        b = t % b;
     }
+    return a;
 }
 
 var fs = require('fs');
