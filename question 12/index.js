@@ -1,5 +1,6 @@
 function processData(input) {
-    var lines = input.split('\n');
+    let lines = input.split('\n');
+    input = null;
     lines.pop();
     let chars = lines[0].split(" ")[1].trim();
     let base = parseInt(lines[0].split(" ")[0]);
@@ -7,6 +8,7 @@ function processData(input) {
     let num1 = lines[1].trim().split("").reverse();
     let num2 = lines[2].substr(1).trim().split("").reverse();
     let carry = 0;
+
 
     let result = "";
     let lastIndex = 0;
@@ -53,6 +55,8 @@ function processData(input) {
     console.log(lines[2]);
     console.log(lines[3]);
     console.log((carry > 0 ? "" : " ") + result);
+
+    console.log(process.memoryUsage());
 }
 
 var fs = require('fs');
